@@ -62,12 +62,12 @@ function quizCreator() {
 };
 
 //Timer
-const timerDisplay = () => {
+function timerDisplay() {
     countdown = setInterval (() => {
         timer--;
         timeLeft.innerHTML = `${timer}`;
         if (timer == 0) {
-            clearInterval(timer);
+            clearInterval(countdown);
             endGame();
         }
     }, 1000)
