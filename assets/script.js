@@ -9,6 +9,9 @@ let restartButton = document.getElementById("restart");
 let userScore = document.getElementById("user-score");
 let startScreen = document.querySelector(".start-screen");
 let startButton = document.getElementById("start-button");
+let playerScore = 0;
+let timer = 75;
+let countdown;
 
 
 
@@ -58,6 +61,19 @@ function quizCreator() {
     }
 };
 
+//Timer
+const timerDisplay = () => {
+    countdown = setInterval (() => {
+        timer--;
+        timeLeft.innerHTML = `${timer}`;
+        if (timer == 0) {
+            clearInterval(timer);
+            endGame();
+        }
+    }, 1000)
+
+};
+
 //Display quiz
 let quizDisplay = () => {
     let quizCards = document.querySelectorAll(".container-mid");
@@ -84,9 +100,9 @@ let quizDisplay = () => {
 //initial quiz setup
 function initial() {
     quizContainer.innerHTML = "";
-    let score = 0;
     quizCreator();
     quizDisplay();
+    timerDisplay();
 };
 
 //start button functionality
@@ -95,3 +111,8 @@ startButton.addEventListener("click", function () {
     displayContainer.classList.remove('hide');
     initial();
 });
+
+//when time runs out or no more questions
+function endGame() {
+
+}

@@ -21,7 +21,9 @@ body {
 }
 
 h1 {
-    padding-bottom: 35px;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: solid rgba(233, 230, 81, 0.925);
 }
 
 p {
