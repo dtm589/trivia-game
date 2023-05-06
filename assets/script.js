@@ -35,39 +35,39 @@ function quizCreator() {
     //randomly sort questions
     quizArray.sort(() =>Math.random() - 0.5);
     //generate quiz
-    for (let i of quizArray) {
+    for (i = 0; i < quizArray.length; i++) {
+        console.log(quizArray[i]);
         //quiz card creation
         let div = document.createElement("div");
-        div.classList.add("container-mid", "hide");
+        div.classList.add("container-mid", );
         //questions
         let div_question = document.createElement("p");
         div_question.classList.add("question");
-        div_question.innerHTML = i.question;
+        div_question.innerHTML = quizArray[i].question;
         div.appendChild(div_question);
         //answers
         div.innerHTML += `
-        <button class="option-div" onclick="checker(this)">${i.answers[0]}</button>
-        <button class="option-div" onclick="checker(this)">${i.answers[1]}</button>
-        <button class="option-div" onclick="checker(this)">${i.answers[2]}</button>
-        <button class="option-div" onclick="checker(this)">${i.answers[3]}</button>
+        <button class="option-div" onclick="checker(this)">"quizArray[i].answers[0]"</button>
+        <button class="option-div" onclick="checker(this)">quizArray[i].answers[1]</button>
+        <button class="option-div" onclick="checker(this)">quizArray[i].answers[2]</button>
+        <button class="option-div" onclick="checker(this)">quizArray[i].answers[3]</button>
         `;
         quizContainer.appendChild(div);
 
-        quizArray[i].classList.remove("hide");
-        quizDisplay();
     }
-}
+};
 
 //Display quiz
-/* let quizDisplay = (questionCount) => {
+let quizDisplay = (quizArray) => {
     let quizCards = document.querySelectorAll(".container-mid");
+    console.log(quizCards);
     //Hide other cards
-    quizCards.forEach((quizCard) => {
-        quizCard.classList.add("hide");
-    });
+    for (i = 0; i < 15; i++) {
+        quizCards.classList.add("hide");
+    }
     //Display current question card
-    quizCards[questionCount].classList.remove("hide");
-}; */
+    quizCards.classList.remove("hide");
+};
 
 
 //initial quiz setup
@@ -75,7 +75,7 @@ function initial() {
     quizContainer.innerHTML = "";
     let score = 0;
     quizCreator();
-    //quizDisplay();
+    quizDisplay();
 };
 
 //start button functionality
