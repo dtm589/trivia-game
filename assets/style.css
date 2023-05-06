@@ -28,6 +28,8 @@ p {
     text-align: center;
     padding-bottom: 35px;
     max-width: 400px;
+    margin: 0;
+    font-size: 1.2em;
 }
 
 button {
@@ -96,4 +98,32 @@ button {
 .user-score {
     font-size: 1.8em;
     color: #ffffff;
+}
+
+#container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+#container-mid {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.option-div {
+    font-size: 1.0em;
+    text-align: center;
+    max-width: 400px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(233, 230, 81, 0.925);
+    padding: 0.5em;
+    border-radius: 0.4em;
 }

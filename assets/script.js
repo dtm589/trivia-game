@@ -33,13 +33,13 @@ const quizArray = [{ id: "0", question: "Javascript is an _______ language?", an
 //Quiz Creation
 function quizCreator() {
     //randomly sort questions
-    quizArray.sort(() =>Math.random() - 0.5);
+    quizArray.sort(() => Math.random() - 0.5);
     //generate quiz
     for (i = 0; i < quizArray.length; i++) {
         console.log(quizArray[i]);
         //quiz card creation
         let div = document.createElement("div");
-        div.classList.add("container-mid", );
+        div.classList.add("container-mid",);
         //questions
         let div_question = document.createElement("p");
         div_question.classList.add("question");
@@ -47,26 +47,37 @@ function quizCreator() {
         div.appendChild(div_question);
         //answers
         div.innerHTML += `
-        <button class="option-div" onclick="checker(this)">"quizArray[i].answers[0]"</button>
-        <button class="option-div" onclick="checker(this)">quizArray[i].answers[1]</button>
-        <button class="option-div" onclick="checker(this)">quizArray[i].answers[2]</button>
-        <button class="option-div" onclick="checker(this)">quizArray[i].answers[3]</button>
+        <button class="option-div" onclick="checker(this)">${quizArray[i].answers[0]}</button>
+        <button class="option-div" onclick="checker(this)">${quizArray[i].answers[1]}</button>
+        <button class="option-div" onclick="checker(this)">${quizArray[i].answers[2]}</button>
+        <button class="option-div" onclick="checker(this)">${quizArray[i].answers[3]}</button>
         `;
+        quizContainer.appendChild(nextButton);
         quizContainer.appendChild(div);
 
     }
 };
 
 //Display quiz
-let quizDisplay = (quizArray) => {
+let quizDisplay = () => {
     let quizCards = document.querySelectorAll(".container-mid");
     console.log(quizCards);
     //Hide other cards
     for (i = 0; i < 15; i++) {
-        quizCards.classList.add("hide");
+        quizCards[i].classList.add("hide");
     }
     //Display current question card
-    quizCards.classList.remove("hide");
+    let quizCounter = 0;
+    quizCards[quizCounter].classList.remove("hide");
+
+    nextButton.addEventListener("click" , function () {
+            quizCards[quizCounter].classList.add("hide");
+            quizCards[quizCounter+1].classList.remove("hide");
+            quizCounter++;
+            if (quizCounter === "14") {
+                endGame();
+            }
+        })
 };
 
 
@@ -79,7 +90,7 @@ function initial() {
 };
 
 //start button functionality
-startButton.addEventListener("click", function() {
+startButton.addEventListener("click", function () {
     startScreen.classList.add('hide');
     displayContainer.classList.remove('hide');
     initial();
