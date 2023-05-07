@@ -117,13 +117,14 @@ function checker(userOption) {
                 element.classList.add("correct");
             }
         })
-    }
+    };
 
     //disable all options
     options.forEach((element) => {
         element.disabled = true;
     });
-}
+    quizCounter++;
+};
 
 //initial quiz setup
 function initial() {
