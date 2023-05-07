@@ -175,7 +175,7 @@ submitButton.addEventListener("click", (event) => {
     //save current user name and score
     let userInfo = { "name": userName.value, "score": playerScore };
     //make sure they enter something into name field
-    if(userName.value === "") {
+    if (userName.value === "") {
         alert("Please enter your name");
         event.preventDefault();
     };
@@ -186,7 +186,7 @@ submitButton.addEventListener("click", (event) => {
     let lastUser = JSON.parse(localStorage.getItem("userObject"));
     if (lastUser !== null) {
         leaderBoard.innerHTML = `${lastUser.name} - ${lastUser.score}`;
-        } else {
-          return
-        };
+    } else {
+        return
+    };
 });
