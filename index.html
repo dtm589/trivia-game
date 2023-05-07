@@ -25,7 +25,7 @@
     <section id="display-container" class="hide">
         <div class="header">
             <div>
-                <span id="high-scores">High Scores</span>
+                <button id="high-scores">View High Scores</button>
             </div>
             <div class="timer-div">
                 <img src="assets\images\alarm-clock.png" alt="Stop watch" width="30px">
@@ -38,7 +38,14 @@
         </div>
     </section>
     <section class="score-container hide">
-        <div id="user-score">Demo Score</div>
+        <form>
+            <label for="name">Enter your name:</label><br>
+            <input id="user-name" type="text" id="userName"><br>
+            <input id="submit" type="submit" value="Submit Score">
+        </form>
+        <h2>Current Player Score: <span id="user-score"></span></h2>
+        <h2>Leaderboard</h2>
+        <p id="leader-board"></p>
         <button id="restart">Restart</button>
     </section>
     <script type="text/javascript" src="assets\script.js"></script>
