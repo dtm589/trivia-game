@@ -43,7 +43,6 @@ function quizCreator() {
     quizArray.sort(() => Math.random() - 0.5);
     //generate quiz
     for (i = 0; i < quizArray.length; i++) {
-        console.log(quizArray[i]);
         //quiz card creation
         let div = document.createElement("div");
         div.classList.add("container-mid",);
@@ -70,7 +69,7 @@ function timerDisplay() {
     countdown = setInterval(() => {
         timer--;
         timeLeft.innerHTML = `${timer}`;
-        if (timer === 0) {
+        if (timer < 1) {
             clearInterval(countdown);
             endGame();
         }
@@ -79,9 +78,8 @@ function timerDisplay() {
 };
 
 //Display quiz
-let quizDisplay = () => {
+let quizDisplay = (quizCounter) => {
     let quizCards = document.querySelectorAll(".container-mid");
-    console.log(quizCards);
     //Hide other cards
     for (i = 0; i < 15; i++) {
         quizCards[i].classList.add("hide");
@@ -93,7 +91,7 @@ let quizDisplay = () => {
         quizCards[quizCounter].classList.add("hide");
         quizCards[quizCounter + 1].classList.remove("hide");
         quizCounter++;
-        if (quizCounter === "14") {
+        if (quizCounter === 14) {
             endGame();
         }
     })
@@ -130,13 +128,13 @@ function checker(userOption) {
 //initial quiz setup
 function initial() {
     quizContainer.innerHTML = "";
+    timer = 75;
+    playerScore = 0;
+    quizCounter = 0;
     clearInterval(countdown);
     quizCreator();
     quizDisplay(quizCounter);
     timerDisplay();
-    timer = 75;
-    playerScore = 0;
-    quizCounter = 0;
 };
 
 //start button functionality
@@ -152,13 +150,6 @@ function endGame() {
     displayContainer.classList.add("hide");
     //display the score container
     scoreContainer.classList.remove("hide");
-
-    let lastUser = JSON.parse(localStorage.getItem("userObject"));
-    if (userObject !== null) {
-        leaderBoard.innerHTML = `${userObject.name} "-" ${userObject.score}`;
-        } else {
-          return;
-        };
 };
 
 //View High Scores Button
@@ -169,14 +160,13 @@ highScores.addEventListener("click", function () {
     scoreContainer.classList.remove("hide");
 
     //show players current score
-    userScore.innerHTML = playerScore;
+    userScore.innerText = playerScore;
 });
 
 //Add Functionality to restart button
 restartButton.addEventListener("click", () => {
-    initial();
-    displayContainer.classList.remove("hide");
     scoreContainer.classList.add("hide");
+    startScreen.classList.remove('hide');
 });
 
 
@@ -189,12 +179,13 @@ submitButton.addEventListener("click", (event) => {
         event.preventDefault();
     };
     localStorage.setItem("userObject", JSON.stringify(userInfo));
+    event.preventDefault();
 
     //display leader board from local memory
     let lastUser = JSON.parse(localStorage.getItem("userObject"));
-    if (userObject !== null) {
-        leaderBoard.innerHTML = `${userObject.name} '-' ${userObject.score}`;
+    if (lastUser !== null) {
+        leaderBoard.innerHTML = `${lastUser.name} - ${lastUser.score}`;
         } else {
-          return;
+          return
         };
 });
