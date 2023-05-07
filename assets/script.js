@@ -4,14 +4,18 @@ let timeLeft = document.getElementById("timer");
 let quizContainer = document.getElementById("container");
 let nextButton = document.getElementById("next-button");
 let highScores = document.getElementById("high-scores");
-let scoreContainer = document.getElementById("score-container");
+let scoreContainer = document.querySelector(".score-container");
 let restartButton = document.getElementById("restart");
 let userScore = document.getElementById("user-score");
 let startScreen = document.querySelector(".start-screen");
 let startButton = document.getElementById("start-button");
+let submitButton = document.getElementById("submit");
+let userName = document.getElementById("user-name");
+let leaderBoard = document.getElementById("leader-board");
 let playerScore = 0;
 let timer = 75;
 let countdown;
+let quizCounter = 0;
 
 
 
@@ -24,7 +28,7 @@ const quizArray = [{ id: "0", question: "Javascript is an _______ language?", an
 { id: "5", question: "The process in which an object or data structure is translated into a format suitable for transferral over a network, or storage is called?", answers: ["A Object Serialization", "B Object Encapsulation", "C Object Inheritance", "D None of the Above"], correct: "A Object Serialization" },
 { id: "6", question: "Which of the following are closures in Javascript?", answers: ["A Variables", "B Functions", "C Objects", "D All of the Above"], correct: "D All of the Above" },
 { id: "7", question: "Which of the following is not a Javascript framework?", answers: ["A Node", "B Cassandra", "C Vue", "D React"], correct: "B Cassandra" },
-{ id: "8", question: "How to stop an interval timer in Javascript?", answers: ["A clearInterval", "B clearTimer", "C intervalOver", "D stopTimer"], correct: "B clearInterval" },
+{ id: "8", question: "How to stop an interval timer in Javascript?", answers: ["A clearInterval", "B clearTimer", "C intervalOver", "D stopTimer"], correct: "A clearInterval" },
 { id: "9", question: "How are objects compared when they are checked with the strict equality operator?", answers: ["A The contents of the objects are compared.", "B Their references are compared.", "C Both A and B", "D None of the Above"], correct: "B Their references are compared." },
 { id: "10", question: "How do we write a comment in javascript?", answers: ["A /* */", "B //", "C #", "D $ $"], correct: "B //" },
 { id: "11", question: "Arrays in JavaScript are defined by which of the following statements?", answers: ["A It is an ordered list of values.", "B It is an ordered list of objects.", "C It is an ordered list of strings.", "D It is an ordered list of functions."], correct: "A It is an ordered list of values." },
@@ -63,10 +67,10 @@ function quizCreator() {
 
 //Timer
 function timerDisplay() {
-    countdown = setInterval (() => {
+    countdown = setInterval(() => {
         timer--;
         timeLeft.innerHTML = `${timer}`;
-        if (timer == 0) {
+        if (timer === 0) {
             clearInterval(countdown);
             endGame();
         }
@@ -83,26 +87,56 @@ let quizDisplay = () => {
         quizCards[i].classList.add("hide");
     }
     //Display current question card
-    let quizCounter = 0;
     quizCards[quizCounter].classList.remove("hide");
 
-    nextButton.addEventListener("click" , function () {
-            quizCards[quizCounter].classList.add("hide");
-            quizCards[quizCounter+1].classList.remove("hide");
-            quizCounter++;
-            if (quizCounter === "14") {
-                endGame();
-            }
-        })
+    nextButton.addEventListener("click", function () {
+        quizCards[quizCounter].classList.add("hide");
+        quizCards[quizCounter + 1].classList.remove("hide");
+        quizCounter++;
+        if (quizCounter === "14") {
+            endGame();
+        }
+    })
 };
 
+//Answer Checker
+function checker(userOption) {
+    let userSolution = userOption.innerText;
+    let question = document.getElementsByClassName("container-mid")[quizCounter];
+    let options = question.querySelectorAll(".option-div");
+
+    //if user clicks correct answer
+    if (userSolution === quizArray[quizCounter].correct) {
+        userOption.classList.add("correct");
+        playerScore += 20;
+    } else {
+        //user clicks wrong answer
+        timer = timer - 10;
+        userOption.classList.add("incorrect");
+        //For marking the correct answer
+        options.forEach((element) => {
+            if (element.innerText == quizArray[quizCounter].correct) {
+                element.classList.add("correct");
+            }
+        })
+    }
+
+    //disable all options
+    options.forEach((element) => {
+        element.disabled = true;
+    });
+}
 
 //initial quiz setup
 function initial() {
     quizContainer.innerHTML = "";
+    clearInterval(countdown);
     quizCreator();
-    quizDisplay();
+    quizDisplay(quizCounter);
     timerDisplay();
+    timer = 75;
+    playerScore = 0;
+    quizCounter = 0;
 };
 
 //start button functionality
@@ -114,5 +148,53 @@ startButton.addEventListener("click", function () {
 
 //when time runs out or no more questions
 function endGame() {
+    //hide all questions
+    displayContainer.classList.add("hide");
+    //display the score container
+    scoreContainer.classList.remove("hide");
 
-}
+    let lastUser = JSON.parse(localStorage.getItem("userObject"));
+    if (userObject !== null) {
+        leaderBoard.innerHTML = `${userObject.name} "-" ${userObject.score}`;
+        } else {
+          return;
+        };
+};
+
+//View High Scores Button
+highScores.addEventListener("click", function () {
+    //hide all questions
+    displayContainer.classList.add("hide");
+    //show score container
+    scoreContainer.classList.remove("hide");
+
+    //show players current score
+    userScore.innerHTML = playerScore;
+});
+
+//Add Functionality to restart button
+restartButton.addEventListener("click", () => {
+    initial();
+    displayContainer.classList.remove("hide");
+    scoreContainer.classList.add("hide");
+});
+
+
+submitButton.addEventListener("click", (event) => {
+    //save current user name and score
+    let userInfo = { "name": userName.value, "score": playerScore };
+    //make sure they enter something into name field
+    if(userName.value === "") {
+        alert("Please enter your name");
+        event.preventDefault();
+    };
+    localStorage.setItem("userObject", JSON.stringify(userInfo));
+
+    //display leader board from local memory
+    let lastUser = JSON.parse(localStorage.getItem("userObject"));
+    if (userObject !== null) {
+        leaderBoard.innerHTML = `${userObject.name} '-' ${userObject.score}`;
+        } else {
+          return;
+        };
+});
